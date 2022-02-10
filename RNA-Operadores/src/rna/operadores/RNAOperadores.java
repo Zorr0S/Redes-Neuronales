@@ -91,17 +91,17 @@ public class RNAOperadores {
                         { 0, 1 },
                         { 0, 0 }};
    
-      
       System.out.println( "[ "+Intput[1][0]+" ]" +" NOT : " + RNA_NOT(Intput[1][0]));
       System.out.println( "[ "+Intput[1][1]+" ]" +" NOT : " + RNA_NOT(Intput[1][1]));
       System.out.println();
+      
       for (int i = 0; i < Intput.length; i++) {
          System.out.println( Arrays.toString(Intput[i]) +" AND : " + RNA_AND(Intput[i]));
-         System.out.println( Arrays.toString(Intput[i]) +" OR : " + RNA_OR(Intput[i]));
+         System.out.println( Arrays.toString(Intput[i]) +" OR  : " + RNA_OR(Intput[i]));
          
          System.out.println( Arrays.toString(Intput[i]) +" XOR : " + RNA_XOR(Intput[i]));
         
-         System.out.println( "[ "+Intput[i][1]+" ]" +" NOT : " + RNA_NOT(Intput[i][1]));
+         System.out.println( "[ "+Intput[i][1]+" ]" +" NOT  : " + RNA_NOT(Intput[i][1]));
          
          System.out.println("\n");
       }
