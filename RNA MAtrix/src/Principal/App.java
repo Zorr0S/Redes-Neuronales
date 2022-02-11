@@ -69,13 +69,10 @@ public class App {
     public static int RNA_NOT(double Input) {
 
         double[] Pesos = { -2 };
-        double[] Entrada = {Input};
+        double[] Entrada = { Input };
         Matrix entradaMatrix = Matrix.createColumnMatrix(Entrada);
         Matrix weitghtMatrix = Matrix.createColumnMatrix(Pesos);
         double Total = MatrixMath.dotProduct(entradaMatrix, weitghtMatrix);
-        
-
-       
 
         double Umbral = -1;
         if (Total >= Umbral) {
@@ -85,31 +82,49 @@ public class App {
         }
 
     }
-    public static boolean RNAComparar(Matrix Entrada){
-        ///                N1 - N2- N3- N4- N5- N6
-        double[][] Red = {{ 0 , 1 ,-1 , 1, -1, 1},   //N1
-                          { 1 , 0 ,-1 , 1, -1, 1},   //N2
-                          {-1 ,-1 , 0 ,-1,  1,-1},  //N3
-                          { 1 , 1 ,-1 , 0, -1, 1},  //N4
-                          {-1 ,-1 , 1 ,-1,  0,-1},  //N5
-                          { 1 , 1 ,-1 , 1,- 1, 0},  //N6
-    
-                        };
-        
-        System.out.println(Arrays.toString(Red));               
-        Matrix redMatrix= new Matrix(Red);
-        Matrix resultadoMatrix = MatrixMath.multiply(Entrada, redMatrix);
 
-        if(resultadoMatrix.equals(Entrada)){
-           System.out.println("Es reconocido");
+    public static boolean RNAComparar(Matrix Entrada) {
+        /// N1 - N2- N3- N4- N5- N6
+        double[][] Red = { { 0, 1, -1, 1, -1, 1 }, // N1
+                { 1, 0, -1, 1, -1, 1 }, // N2
+                { -1, -1, 0, -1, 1, -1 }, // N3
+                { 1, 1, -1, 0, -1, 1 }, // N4
+                { -1, -1, 1, -1, 0, -1 }, // N5
+                { 1, 1, -1, 1, -1, 0 }, // N6
+
+        };
+
+        // System.out.println("Dimenciones de entrada : [" +Entrada.getRows() + " , " + Entrada.getCols()  + " ]");
+
+        Matrix redMatrix = new Matrix(Red);
+        Matrix resultadoMatrix = MatrixMath.multiply(redMatrix, Entrada);
+        // System.out.println("Dimenciones de salida : [" +resultadoMatrix.getRows() + " , " + resultadoMatrix.getCols()  + " ]");
+
+        System.out.printf(" Salida [");
+        for (int i = 0; i < resultadoMatrix.getRows(); i++) {
+        
+            for (int j = 0; j < resultadoMatrix.getCols(); j++) {
+                if((resultadoMatrix.get(i, j)> 0)){
+                    resultadoMatrix.set(i,j , 1);
+                   System.out.printf(resultadoMatrix.get(i, j)+ ", ");
+                }else{
+                    resultadoMatrix.set(i,j , 0);
+                    System.out.printf(resultadoMatrix.get(i, j)+ ", ");
+                }
+            }
+            
+        }
+        System.out.println("]");   
+
+        if (Entrada.equals(resultadoMatrix)) {
+            System.out.println("Es reconocido");
             return true;
-        }else{
-           System.out.println("no es reconocido");
+        } else {
+            System.out.println("no es reconocido");
 
             return false;
         }
-        
-        
+           
     }
 
     public static void main(String[] args) {
@@ -118,20 +133,23 @@ public class App {
                 { 1, 0 },
                 { 0, 1 },
                 { 0, 0 } };
-        double[][] Muestra= {{0,0,1,0,1,0},
-                             {1,1,0,1,0,1},
-                            { 1,0,1,0,1,1}
-                        };
-        Matrix MuestraMatrix= new Matrix(Muestra);
-        for (int i = 0; i < MuestraMatrix.getRows(); i++) {
-            RNAComparar(MuestraMatrix.getRow(i));
-            
+
+        double[][] Muestra = { { 0, 0, 1, 0, 1, 0 },
+                { 1, 1, 0, 1, 0, 1 },
+                { 1, 0, 1, 0, 1, 1 }
+        };
+        for (int i = 0; i < Muestra.length; i++) {
+            System.out.println("Entrada " + Arrays.toString(Muestra[i]));
+            RNAComparar(Matrix.createColumnMatrix(Muestra[i]));
+
+            System.out.println("\n");
         }
+
         Matrix Entrada = new Matrix(Intput);
 
-        System.out.println("[ " + Intput[1][0] + " ]" + " NOT : " + RNA_NOT(Entrada.get(1,0)));
-       
-        System.out.println("[ " + Intput[1][1] + " ]" + " NOT : " + RNA_NOT(Entrada.get(1,1)));
+        System.out.println("[ " + Intput[1][0] + " ]" + " NOT : " + RNA_NOT(Entrada.get(1, 0)));
+
+        System.out.println("[ " + Intput[1][1] + " ]" + " NOT : " + RNA_NOT(Entrada.get(1, 1)));
         System.out.println();
 
         for (int i = 0; i < Entrada.getRows(); i++) {
