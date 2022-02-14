@@ -126,13 +126,37 @@ public class App {
         }
            
     }
+    public static void  Tarae(){
+        double[][] A= {{3,2},{1,3},{1,4}};
+        double[][] B= {{1,2,3},{4,5,6}};
+
+        Matrix matrixA = new Matrix(A);
+        Matrix matrixB = new Matrix(B);
+
+        Matrix resultadoMatrix = MatrixMath.multiply(matrixA, matrixB);
+        for (int i = 0; i < resultadoMatrix.getRows(); i++) {
+        
+            for (int j = 0; j < resultadoMatrix.getCols(); j++) {
+              
+                   System.out.printf(resultadoMatrix.get(i, j)+ ", ");
+               
+            }
+            System.out.println("");
+        }
+        double[][] C= {{6,2,7,4}};
+        double[][] D ={{6,6,7,9}};
+        Matrix matrixC = new Matrix(C);
+        Matrix matrixD = new Matrix(D);
+        System.out.println(MatrixMath.dotProduct(matrixC, matrixD));
+    }
 
     public static void main(String[] args) {
-
+        Tarae();
         double[][] Intput = { { 1, 1 },
                 { 1, 0 },
                 { 0, 1 },
                 { 0, 0 } };
+        
 
         double[][] Muestra = { { 0, 0, 1, 0, 1, 0 },
                 { 1, 1, 0, 1, 0, 1 },
