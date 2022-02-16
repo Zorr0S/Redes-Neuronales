@@ -8,6 +8,8 @@
 package Principal;
 
 import java.util.Arrays;
+
+import neural.activation.ActivationSigmoid;
 import neural.matrix.Matrix;
 import neural.matrix.MatrixMath;
 
@@ -28,6 +30,10 @@ public class App {
 
         double Total = MatrixMath.dotProduct(Input, weitghtMatrix);
 
+       
+        ActivationSigmoid FuncionDeActivacion = new ActivationSigmoid();
+        System.out.println(FuncionDeActivacion.activationFunction(Total)); 
+
         double Umbral = 1.5;
         if (Total >= Umbral) {
             return 1;
@@ -43,6 +49,10 @@ public class App {
         Matrix weitghtMatrix = Matrix.createColumnMatrix(Pesos);
 
         double Total = MatrixMath.dotProduct(Input, weitghtMatrix);
+
+        ActivationSigmoid FuncionDeActivacion = new ActivationSigmoid();
+        System.out.println(FuncionDeActivacion.activationFunction(Total)); 
+        
         double Umbral = 0.5;
         if (Total >= Umbral) {
             return 1;
@@ -57,6 +67,10 @@ public class App {
         double[] Resultados = { (RNA_AND(Input)), RNA_OR(Input) };
         Matrix resultadosMatrix = Matrix.createColumnMatrix(Resultados);
         double Total = MatrixMath.dotProduct(resultadosMatrix, weitghtMatrix);
+        
+        ActivationSigmoid FuncionDeActivacion = new ActivationSigmoid();
+        System.out.println(FuncionDeActivacion.activationFunction(Total)); 
+        
         // Umbral
         double Umbral = 0.5;
         if (Total >= Umbral) {
@@ -73,6 +87,9 @@ public class App {
         Matrix entradaMatrix = Matrix.createColumnMatrix(Entrada);
         Matrix weitghtMatrix = Matrix.createColumnMatrix(Pesos);
         double Total = MatrixMath.dotProduct(entradaMatrix, weitghtMatrix);
+
+        ActivationSigmoid FuncionDeActivacion = new ActivationSigmoid();
+        System.out.println(FuncionDeActivacion.activationFunction(Total)); 
 
         double Umbral = -1;
         if (Total >= Umbral) {
@@ -163,6 +180,19 @@ public class App {
             System.out.println("\n");
         }
 
+    }
+    /**
+     * Neurona
+     */
+    public class Neurona {
+        Matrix Entrada;
+        Matrix Pesos;
+        double SalidaNeta;
+        Double SalidaSesgo;
+        Neurona(){
+
+        }
+        
     }
 
 }
