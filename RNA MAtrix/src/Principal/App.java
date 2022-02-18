@@ -8,6 +8,8 @@
 package Principal;
 
 import java.util.Arrays;
+
+import neural.activation.ActivationSigmoid;
 import neural.matrix.Matrix;
 import neural.matrix.MatrixMath;
 
@@ -21,60 +23,103 @@ public class App {
      * @param args the command line arguments
      */
 
-    public static int RNA_AND(Matrix Input) {
+    public static double RNA_AND(Matrix Input) {
         // Umbral
-        double[] Pesos = { 1, 1 };
+        double[] Pesos = { 1, 1 ,1};
         Matrix weitghtMatrix = Matrix.createColumnMatrix(Pesos);
+        // //Input.add(0, c, value);
+        // double[] Sesgo = { 1 }; // Entrada del sesgo siempre vale 1
+		// double[] Pesosesgo = { }; // Peso definido en el sesgo
+		// Matrix sesgoMatrix = Matrix.createColumnMatrix(Sesgo);
+		// Matrix pesosesgoMatrix = Matrix.createColumnMatrix(Pesosesgo);
+		
 
-        double Total = MatrixMath.dotProduct(Input, weitghtMatrix);
+        double Total = MatrixMath.dotProduct(Input, weitghtMatrix) ;
 
-        double Umbral = 1.5;
+       
+        ActivationSigmoid FuncionDeActivacion = new ActivationSigmoid();
+        //System.out.println(FuncionDeActivacion.activationFunction(Total)); 
+        Total=FuncionDeActivacion.activationFunction(Total);
+       // double Umbral = 1.5;
+         double Umbral = 0.9;
+
         if (Total >= Umbral) {
-            return 1;
+            return Total;
         } else {
-            return 0;
+            return Total;
         }
 
     }
 
-    public static int RNA_OR(Matrix Input) {
+    public static double RNA_OR(Matrix Input) {
         // Umbral
-        double[] Pesos = { 1, 1 };
+        double[] Pesos = { 1, 1, 0.5 };
         Matrix weitghtMatrix = Matrix.createColumnMatrix(Pesos);
 
+        // double[] Sesgo = { 1 }; // Entrada del sesgo siempre vale 1
+		// double[] Pesosesgo = { 0.5 }; // Peso definido en el sesgo
+		// Matrix sesgoMatrix = Matrix.createColumnMatrix(Sesgo);
+		// Matrix pesosesgoMatrix = Matrix.createColumnMatrix(Pesosesgo);
+		
+
         double Total = MatrixMath.dotProduct(Input, weitghtMatrix);
-        double Umbral = 0.5;
+        
+        //double Umbral = 0.5;
+
+        ActivationSigmoid FuncionDeActivacion = new ActivationSigmoid();
+        //System.out.println(FuncionDeActivacion.activationFunction(Total)); 
+        Total=FuncionDeActivacion.activationFunction(Total);
+    
+         double Umbral =0.8;
         if (Total >= Umbral) {
-            return 1;
+            return Total;
         } else {
-            return 0;
+            return Total;
         }
     }
 
-    public static int RNA_XOR(Matrix Input) {
-        double[] Pesos = { -1, 1 };
+    public static double RNA_XOR(Matrix Input) {
+        double[] Pesos = { -1, 1,0.5};
         Matrix weitghtMatrix = Matrix.createColumnMatrix(Pesos);
-        double[] Resultados = { (RNA_AND(Input)), RNA_OR(Input) };
+
+        double[] Resultados = { (RNA_AND(Input)), RNA_OR(Input), 1 };
+        
         Matrix resultadosMatrix = Matrix.createColumnMatrix(Resultados);
-        double Total = MatrixMath.dotProduct(resultadosMatrix, weitghtMatrix);
+        
+        
+        
+        double Total = MatrixMath.dotProduct(resultadosMatrix, weitghtMatrix) ;
+
+        
+        
+        ActivationSigmoid FuncionDeActivacion = new ActivationSigmoid();
+        System.out.print("XOR Funcion sigmondial: "+FuncionDeActivacion.activationFunction(Total)+ "  "); 
+        
         // Umbral
-        double Umbral = 0.5;
-        if (Total >= Umbral) {
-            return 1;
+       // double Umbral = 0.5;
+       Total=FuncionDeActivacion.activationFunction(Total);
+       double Umbral = 0.5;
+        if (Total > Umbral) {
+            return Total;
         } else {
-            return 0;
+            return Total;
         }
     }
 
-    public static int RNA_NOT(double Input) {
+    public static double RNA_NOT(double Input) {
 
         double[] Pesos = { -2 };
+       
         double[] Entrada = { Input };
         Matrix entradaMatrix = Matrix.createColumnMatrix(Entrada);
         Matrix weitghtMatrix = Matrix.createColumnMatrix(Pesos);
         double Total = MatrixMath.dotProduct(entradaMatrix, weitghtMatrix);
 
-        double Umbral = -1;
+        ActivationSigmoid FuncionDeActivacion = new ActivationSigmoid();
+        //  System.out.println(FuncionDeActivacion.activationFunction(Total)); 
+        Total=FuncionDeActivacion.activationFunction(Total);
+        //double Umbral = -1;
+        double Umbral = 0.2;
         if (Total >= Umbral) {
             return 1;
         } else {
@@ -130,33 +175,14 @@ public class App {
         double[][] A= {{3,2},{1,3},{1,4}};
         double[][] B= {{1,2,3},{4,5,6}};
 
-        Matrix matrixA = new Matrix(A);
-        Matrix matrixB = new Matrix(B);
-
-        Matrix resultadoMatrix = MatrixMath.multiply(matrixA, matrixB);
-        for (int i = 0; i < resultadoMatrix.getRows(); i++) {
-        
-            for (int j = 0; j < resultadoMatrix.getCols(); j++) {
-              
-                   System.out.printf(resultadoMatrix.get(i, j)+ ", ");
-               
-            }
-            System.out.println("");
-        }
-        double[][] C= {{6,2,7,4}};
-        double[][] D ={{6,6,7,9}};
-        Matrix matrixC = new Matrix(C);
-        Matrix matrixD = new Matrix(D);
-        System.out.println(MatrixMath.dotProduct(matrixC, matrixD));
-    }
-
     public static void main(String[] args) {
-        Tarae();
-        double[][] Intput = { { 1, 1 },
-                { 1, 0 },
-                { 0, 1 },
-                { 0, 0 } };
-        
+        ActivationSigmoid Prueba = new ActivationSigmoid();
+        System.out.println(Prueba.activationFunction(1.5));
+
+        double[][] Intput = { { 1, 1,1 },
+                { 1, 0 ,1},
+                { 0, 1 ,1},
+                { 0, 0 ,1} };
 
         double[][] Muestra = { { 0, 0, 1, 0, 1, 0 },
                 { 1, 1, 0, 1, 0, 1 },
@@ -175,18 +201,30 @@ public class App {
 
         System.out.println("[ " + Intput[1][1] + " ]" + " NOT : " + RNA_NOT(Entrada.get(1, 1)));
         System.out.println();
+        System.out.println("--------------------------------------------------");
+        System.out.println("|  A  |  B  |  AND  |  OR  |  XOR  |  ¬A  |  ¬B  |"); 
+        System.out.println("--------------------------------------------------");
+        
 
         for (int i = 0; i < Entrada.getRows(); i++) {
-            System.out.println(Arrays.toString(Intput[i]) + " AND : " + RNA_AND(Entrada.getRow(i)));
-            System.out.println(Arrays.toString(Intput[i]) + " OR  : " + RNA_OR(Entrada.getRow(i)));
-
-            System.out.println(Arrays.toString(Intput[i]) + " XOR : " + RNA_XOR(Entrada.getRow(i)));
-
-            System.out.println("[ " + Intput[i][1] + " ]" + " NOT  : " + RNA_NOT(Entrada.get(i, 0)));
-
-            System.out.println("\n");
+          System.out.println( "| "+ Intput[i][0] +" | " + Intput[i][1] +" |  \n AND > "+RNA_AND(Entrada.getRow(i))+"  | \n OR >"+RNA_OR(Entrada.getRow(i))+" | \n XOR > "+RNA_XOR(Entrada.getRow(i))+"  |  \n NOT A > "+ RNA_NOT(Entrada.get(i, 0))+" | \n NOT B > " + RNA_NOT(Entrada.get(i, 1))+"  | ");
+          
         }
+        System.out.println("--------------------------------------------------");
 
+    }
+    /**
+     * Neurona
+     */
+    public class Neurona {
+        Matrix Entrada;
+        Matrix Pesos;
+        double SalidaNeta;
+        Double SalidaSesgo;
+        Neurona(){
+
+        }
+        
     }
 
 }
