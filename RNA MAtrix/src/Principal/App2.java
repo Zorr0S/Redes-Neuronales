@@ -17,21 +17,15 @@ import neural.matrix.MatrixMath;
  *
  * @author alex_
  */
-public class App {
+public class App2 {
 
     /**
      * @param args the command line arguments
      */
 
     public static double RNA_AND(Matrix Input) {
-        // Umbral
         double[] Pesos = { 1, 1, 1 };
         Matrix weitghtMatrix = Matrix.createColumnMatrix(Pesos);
-        // //Input.add(0, c, value);
-        // double[] Sesgo = { 1 }; // Entrada del sesgo siempre vale 1
-        // double[] Pesosesgo = { }; // Peso definido en el sesgo
-        // Matrix sesgoMatrix = Matrix.createColumnMatrix(Sesgo);
-        // Matrix pesosesgoMatrix = Matrix.createColumnMatrix(Pesosesgo);
 
         double Total = MatrixMath.dotProduct(Input, weitghtMatrix);
 
@@ -53,11 +47,6 @@ public class App {
         // Umbral
         double[] Pesos = { 1, 1, 0.5 };
         Matrix weitghtMatrix = Matrix.createColumnMatrix(Pesos);
-
-        // double[] Sesgo = { 1 }; // Entrada del sesgo siempre vale 1
-        // double[] Pesosesgo = { 0.5 }; // Peso definido en el sesgo
-        // Matrix sesgoMatrix = Matrix.createColumnMatrix(Sesgo);
-        // Matrix pesosesgoMatrix = Matrix.createColumnMatrix(Pesosesgo);
 
         double Total = MatrixMath.dotProduct(Input, weitghtMatrix);
 
@@ -168,14 +157,14 @@ public class App {
     }
 
     public static void main(String[] args) {
-        ActivationSigmoid Prueba = new ActivationSigmoid();
-        System.out.println(Prueba.activationFunction(1.5));
+        RNA_Dinamico RNA = new RNA_Dinamico();
+      
 
-        double[][] Intput = { { 1, 1, 1 },
-                { 1, 0, 1 },
-                { 0, 1, 1 },
-                { 0, 0, 1 } };
-
+        double[][] Input = { { 0, 0, 1 },
+                             { 0, 1, 1 },
+                             { 1, 0, 1 },
+                             { 1, 1, 1 } };
+        Matrix Entrada = new Matrix(Input);
         double[][] Muestra = { { 0, 0, 1, 0, 1, 0 },
                 { 1, 1, 0, 1, 0, 1 },
                 { 1, 0, 1, 0, 1, 1 }
@@ -187,22 +176,61 @@ public class App {
             System.out.println("\n");
         }
 
-        Matrix Entrada = new Matrix(Intput);
+       
 
-        System.out.println("[ " + Intput[1][0] + " ]" + " NOT : " + RNA_NOT(Entrada.get(1, 0)));
+        double PesosArreglo[][]= { { 1, 1, 1 }, { 1, 1, 0.5 }, { -1, 1, 0.5 }};
+        Matrix PesosMatriz= new Matrix(PesosArreglo);
+        double ValoresFinales[]= new double[3];
+        double HidNeu = 2;
+        double InpCou = 2;
+        double beta=0.7*((Math.pow(HidNeu,(1/InpCou))));
+        //double NormH1 =  Math.sqrt(Math.pow(pesos2.get(0,0),2)+Math.pow(pesos2.get(0,1),2)+Math.pow(pesos2.get(0,2),2));
+        //double NormH2 =  Math.sqrt(Math.pow(pesos2.get(1,0),2)+Math.pow(pesos2.get(1,1),2)+Math.pow(pesos2.get(1,2),2));
+        double[] Norm = new double[(int) HidNeu];
+        
+        for(int i=0; i < HidNeu; i++){
+            Norm[i] = MatrixMath.vectorLength(PesosMatriz.getRow(i));
+            for(int j=0; j < PesosMatriz.getCols(); j++){   
+                double NewWei = (beta*PesosMatriz.get(i,j)/Norm[i]);
+                PesosMatriz.set(i,j,NewWei);
+            }
+        }
 
-        System.out.println("[ " + Intput[1][1] + " ]" + " NOT : " + RNA_NOT(Entrada.get(1, 1)));
+        System.out.println("[ " + Input[1][0] + " ]" + " NOT : " + RNA_NOT(Entrada.get(1, 0)));
+
+        System.out.println("[ " + Input[1][1] + " ]" + " NOT : " + RNA_NOT(Entrada.get(1, 1)));
         System.out.println();
         System.out.println("--------------------------------------------------");
         System.out.println("|  A  |  B  |  AND  |  OR  |  XOR  |  ¬A  |  ¬B  |");
         System.out.println("--------------------------------------------------");
 
         for (int i = 0; i < Entrada.getRows(); i++) {
-            System.out.println("| " + Intput[i][0] + " | " + Intput[i][1] + " |  \n AND > " + RNA_AND(Entrada.getRow(i))
-                    + "  | \n OR >" + RNA_OR(Entrada.getRow(i)) + " | \n XOR > " + RNA_XOR(Entrada.getRow(i))
-                    + "  |  \n NOT A > " + RNA_NOT(Entrada.get(i, 0)) + " | \n NOT B > " + RNA_NOT(Entrada.get(i, 1))
-                    + "  | " +
-                     " XOR> " +'F');
+        
+            ValoresFinales[0]= RNA.AND(Entrada.getRow(i), PesosMatriz.getRow(0));
+            ValoresFinales[1]= RNA.OR(Entrada.getRow(i), PesosMatriz.getRow(1));
+            ValoresFinales[2]= RNA.XOR(Entrada.getRow(i), PesosMatriz.getRow(0),
+                                                          PesosMatriz.getRow(1),
+                                                          PesosMatriz.getRow(2));   
+            
+           
+            // System.out.println("| " + Input[i][0] + " | " + Input[i][1] + 
+            // " |  " +  ValoresFinales[0]
+            //         + "  |  " +ValoresFinales[1]
+            //         + " |  " + ValoresFinales[2]
+            //         + "  | " + RNA_NOT(Entrada.get(i, 0)) 
+            //         + "  | " + RNA_NOT(Entrada.get(i, 1))
+            //         + "  | " + 
+            //         "XOR > " + ValoresFinales[2]);
+        
+        
+             System.out.println("| " + Input[i][0] + " | " + Input[i][1] + 
+            "  | " +  RNA.Binario(ValoresFinales[0], 0.7891705023859108)
+                    + "  |  " + RNA.Binario(ValoresFinales[1], 0.6224593312018546)
+                    + "  | " + RNA.BinarioExacto(ValoresFinales[2], 0.6155803000154294)
+                    + "  | " + RNA_NOT(Entrada.get(i, 0)) 
+                    + "  | " + RNA_NOT(Entrada.get(i, 1))
+                    + "  | " + 
+                    "XOR > " + ValoresFinales[2]);
 
         }
         System.out.println("--------------------------------------------------");
