@@ -166,6 +166,9 @@ public class App {
         }
 
     }
+    public static void  Tarae(){
+        double[][] A= {{3,2},{1,3},{1,4}};
+        double[][] B= {{1,2,3},{4,5,6}};
 
     public static void main(String[] args) {
         ActivationSigmoid Prueba = new ActivationSigmoid();
